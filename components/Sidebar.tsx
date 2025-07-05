@@ -7,7 +7,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/buy', label: 'Buy $JUP', icon: '💰' },
+    { href: '/buy', label: 'Buy $Belive', icon: '💰' },
     { href: '/', label: 'Dashboard', icon: '📊' },
     { href: '/history', label: 'History', icon: '📜' },
     { href: '/about', label: 'About', icon: 'ℹ️' },
@@ -16,7 +16,7 @@ export default function Sidebar() {
   return (
     <div className="w-64 bg-secondary min-h-screen p-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-primary">Jup Jackpot</h1>
+        <h1 className="text-2xl font-bold text-primary">BeliveJackpot</h1>
         <p className="text-sm text-gray-400">Hourly Lottery</p>
       </div>
       
