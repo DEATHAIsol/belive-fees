@@ -1,0 +1,1 @@
+"use strict";exports.id=572,exports.ids=[572],exports.modules={1572:(e,t,r)=>{r.r(t),r.d(t,{$$typeof:()=>d,__esModule:()=>a,default:()=>l});var o=r(5153);let s=(0,o.createProxy)(String.raw`/Users/jackheaton/Desktop/crypto/crypto/BELIVEFEES/components/WalletProvider.tsx`),{__esModule:a,$$typeof:d}=s,p=s.default,l=p}};

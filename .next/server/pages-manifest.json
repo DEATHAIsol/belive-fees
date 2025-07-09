@@ -1,9 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/api/leaderboard": "pages/api/leaderboard.js",
-  "/api/jackpot-state": "pages/api/jackpot-state.js",
-  "/api/dev-spin": "pages/api/dev-spin.js",
-  "/api/spin": "pages/api/spin.js"
-}
+{"/api/cron":"pages/api/cron.js","/api/current-prize-pool":"pages/api/current-prize-pool.js","/api/dev-spin":"pages/api/dev-spin.js","/api/jackpot-state":"pages/api/jackpot-state.js","/api/latest-round":"pages/api/latest-round.js","/api/leaderboard":"pages/api/leaderboard.js","/api/spin":"pages/api/spin.js","/api/ticket-holders":"pages/api/ticket-holders.js","/api/total-contests":"pages/api/total-contests.js","/api/total-holders":"pages/api/total-holders.js","/_app":"pages/_app.js","/_error":"pages/_error.js","/_document":"pages/_document.js","/404":"pages/404.html"}

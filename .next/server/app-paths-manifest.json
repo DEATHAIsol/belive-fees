@@ -1,6 +1,10 @@
 {
-  "/leaderboard/page": "app/leaderboard/page.js",
+  "/_not-found": "app/_not-found.js",
+  "/about/page": "app/about/page.js",
+  "/buy/page": "app/buy/page.js",
   "/dev-test/page": "app/dev-test/page.js",
-  "/slot/page": "app/slot/page.js",
-  "/page": "app/page.js"
+  "/history/page": "app/history/page.js",
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/page": "app/page.js",
+  "/slot/page": "app/slot/page.js"
 }
