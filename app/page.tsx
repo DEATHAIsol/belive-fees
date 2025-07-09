@@ -1,150 +1,196 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import StatCard from '../components/StatCard';
-import CountdownTimer from '../components/CountdownTimer';
-import LeaderboardTable from '../components/LeaderboardTable';
+import Link from 'next/link';
+import WalletConnect from '@/components/WalletConnect';
+import { useWallet } from '@solana/wallet-adapter-react';
 
-interface DashboardData {
-  lastRoundRewards: string;
-  ticketHolders: number;
-  totalSupply: string;
-  totalContests: number;
-  currentRound: number;
-  prizePool: string;
-  symbol: string;
-}
-
-export default function Dashboard() {
-  const [data, setData] = useState<DashboardData>({
-    lastRoundRewards: '0',
-    ticketHolders: 0,
-    totalSupply: '1,000,000,000',
-    totalContests: 0,
-    currentRound: 1,
-    prizePool: '0',
-    symbol: 'USDC'
-  });
-  const [loading, setLoading] = useState(true);
+export default function LandingPage() {
+  const { connected } = useWallet();
+  const [jackpotState, setJackpotState] = useState<any>(null);
+  const [leaderboard, setLeaderboard] = useState<any>(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchData = async () => {
       try {
-        // Fetch latest round data
-        const roundResponse = await fetch('/api/latest-round');
-        const roundData = await roundResponse.json();
-
-        // Fetch current prize pool
-        const prizeResponse = await fetch('/api/current-prize-pool');
-        const prizeData = await prizeResponse.json();
-
-        // Fetch total contests
-        const contestsResponse = await fetch('/api/total-contests');
-        const contestsData = await contestsResponse.json();
-
-        // Fetch total holders count
-        const totalHoldersResponse = await fetch('/api/total-holders');
-        const totalHoldersData = await totalHoldersResponse.json();
-
-        setData({
-          lastRoundRewards: roundData.rewardAmount || '0',
-          ticketHolders: totalHoldersData.totalHolders || 0,
-          totalSupply: '1,000,000,000',
-          totalContests: contestsData.totalContests || 0,
-          currentRound: (roundData.round || 0) + 1,
-          prizePool: prizeData.prizePool || '0',
-          symbol: prizeData.symbol || 'USDC'
-        });
+        const [jackpotRes, leaderboardRes] = await Promise.all([
+          fetch('/api/jackpot-state'),
+          fetch('/api/leaderboard')
+        ]);
+        
+        if (jackpotRes.ok) {
+          setJackpotState(await jackpotRes.json());
+        }
+        if (leaderboardRes.ok) {
+          setLeaderboard(await leaderboardRes.json());
+        }
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 60000); // Refresh every 1 minute
-
+    fetchData();
+    const interval = setInterval(fetchData, 30000); // Update every 30 seconds
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen bg-background">
-        <Sidebar />
-        <div className="flex-1 p-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-700 rounded w-1/4 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-32 bg-gray-700 rounded"></div>
-              ))}
-            </div>
-            <div className="h-96 bg-gray-700 rounded"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-      <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-        
-        {/* Stat Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard
-            title="Last Round Rewards"
-            value={`$${data.lastRoundRewards} ${data.symbol}`}
-            icon="💰"
-          />
-          <StatCard
-            title="Ticket Holders"
-            value={data.ticketHolders.toString()}
-            icon="👥"
-          />
-          <StatCard
-            title="Total Supply"
-            value={data.totalSupply}
-            icon="🪙"
-          />
-          <StatCard
-            title="Total Contests"
-            value={data.totalContests.toString()}
-            icon="🏆"
-          />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      {/* Header */}
+      <header className="container mx-auto px-6 py-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-5xl font-bold text-yellow-400 mb-2">Bonk Spins</h1>
+            <p className="text-xl text-gray-300">Spin your way to the next degen jackpot</p>
+          </div>
+          <WalletConnect />
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="text-8xl mb-6">🎰</div>
+          <h2 className="text-4xl font-bold text-white mb-4">The Most Memeable Slot Machine on Solana</h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Experience the thrill of spinning with BONK tokens. Every spin brings you closer to the ultimate jackpot!
+          </p>
+          {connected ? (
+            <Link 
+              href="/slot"
+              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-lg text-xl transition-colors inline-block"
+            >
+              🚀 Start Spinning Now!
+            </Link>
+          ) : (
+            <div className="text-gray-400 text-lg">
+              Connect your wallet to start spinning!
+            </div>
+          )}
         </div>
 
-        {/* Current Round Section */}
-        <div className="bg-secondary rounded-lg p-6 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold mb-2">Current Round {data.currentRound}</h2>
-              <p className="text-gray-400">Next draw in:</p>
+        {/* Jackpot Display */}
+        {jackpotState && (
+          <div className="bg-gray-800 rounded-lg p-8 mb-12">
+            <h3 className="text-3xl font-bold text-center text-yellow-400 mb-6">Current Jackpot</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold text-white mb-2">{jackpotState.pool.toFixed(2)} SOL</div>
+                <div className="text-gray-400">Prize Pool</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-green-400 mb-2">{jackpotState.burned.toFixed(2)} SOL</div>
+                <div className="text-gray-400">Total Burned</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-blue-400 mb-2">{jackpotState.spins}</div>
+                <div className="text-gray-400">Total Spins</div>
+              </div>
             </div>
-            <div className="mt-4 lg:mt-0">
-              <CountdownTimer />
+            
+            {/* Progress Bars */}
+            <div className="mt-8">
+              <div className="mb-4">
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Minor Win Progress</span>
+                  <span>{Math.round(jackpotState.progress.minors * 100)}%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-3">
+                  <div 
+                    className="bg-green-400 h-3 rounded-full transition-all duration-500" 
+                    style={{ width: `${jackpotState.progress.minors * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Major Win Progress</span>
+                  <span>{Math.round(jackpotState.progress.majors * 100)}%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-3">
+                  <div 
+                    className="bg-blue-400 h-3 rounded-full transition-all duration-500" 
+                    style={{ width: `${jackpotState.progress.majors * 100}%` }}
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gray-800 rounded-lg p-4">
-              <h3 className="text-lg font-semibold mb-2">Live Prize Pool</h3>
-              <p className="text-3xl font-bold text-accent">${data.prizePool} {data.symbol}</p>
-            </div>
-            <div className="bg-gray-800 rounded-lg p-4">
-              <h3 className="text-lg font-semibold mb-2">Status</h3>
-              <p className="text-lg text-green-400">Rewards should be distributed soon!</p>
-            </div>
+        )}
+
+        {/* Features */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="bg-gray-800 rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">🎯</div>
+            <h3 className="text-xl font-bold text-white mb-2">Fair & Transparent</h3>
+            <p className="text-gray-300">Every spin uses provably fair RNG. No manipulation, just pure luck!</p>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">🔥</div>
+            <h3 className="text-xl font-bold text-white mb-2">Token Burning</h3>
+            <p className="text-gray-300">20% of every spin goes to burning BONK tokens, increasing scarcity!</p>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">🎁</div>
+            <h3 className="text-xl font-bold text-white mb-2">Free Spins</h3>
+            <p className="text-gray-300">Get 1 free spin for every 10,000 BONK tokens you own!</p>
           </div>
         </div>
 
-        {/* Leaderboard */}
-        <LeaderboardTable />
-      </div>
+        {/* Recent Winners */}
+        {leaderboard && (
+          <div className="bg-gray-800 rounded-lg p-8">
+            <h3 className="text-2xl font-bold text-center text-white mb-6">Recent Winners</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h4 className="text-lg font-bold text-yellow-400 mb-3">🏆 Jackpot Winners</h4>
+                <div className="space-y-2">
+                  {leaderboard.jackpotWinners.slice(0, 5).map((winner: any, i: number) => (
+                    <div key={i} className="text-sm text-gray-300">
+                      {winner.wallet?.slice(0, 6)}...{winner.wallet?.slice(-4)} - {winner.prizeAmount} SOL
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-blue-400 mb-3">💎 Major Winners</h4>
+                <div className="space-y-2">
+                  {leaderboard.majorWinners.slice(0, 5).map((winner: any, i: number) => (
+                    <div key={i} className="text-sm text-gray-300">
+                      {winner.wallet?.slice(0, 6)}...{winner.wallet?.slice(-4)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-lg font-bold text-green-400 mb-3">✨ Minor Winners</h4>
+                <div className="space-y-2">
+                  {leaderboard.minorWinners.slice(0, 5).map((winner: any, i: number) => (
+                    <div key={i} className="text-sm text-gray-300">
+                      {winner.wallet?.slice(0, 6)}...{winner.wallet?.slice(-4)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="text-center mt-6">
+              <Link 
+                href="/leaderboard"
+                className="text-yellow-400 hover:text-yellow-300 font-semibold"
+              >
+                View Full Leaderboard →
+              </Link>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="container mx-auto px-6 py-8 text-center text-gray-400">
+        <p>Bonk Spins - The ultimate meme slot machine on Solana</p>
+        <p className="text-sm mt-2">Built with ❤️ for the BONK community</p>
+      </footer>
     </div>
   );
 } 

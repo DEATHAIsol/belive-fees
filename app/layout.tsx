@@ -1,13 +1,16 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import dynamic from 'next/dynamic';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Belive Jackpot',
-  description: 'Hourly lottery for BELIVE token holders',
+  title: 'Bonk Spins',
+  description: 'Spin your way to the next degen jackpot. Meme slot machine on Solana.',
 }
+
+const WalletContextProvider = dynamic(() => import('@/components/WalletProvider'), { ssr: false });
 
 export default function RootLayout({
   children,
@@ -16,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <WalletContextProvider>{children}</WalletContextProvider>
+      </body>
     </html>
   )
 } 

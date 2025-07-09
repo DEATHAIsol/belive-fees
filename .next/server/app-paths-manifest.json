@@ -1,6 +1,6 @@
 {
-  "/history/page": "app/history/page.js",
-  "/page": "app/page.js",
-  "/about/page": "app/about/page.js",
-  "/buy/page": "app/buy/page.js"
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/dev-test/page": "app/dev-test/page.js",
+  "/slot/page": "app/slot/page.js",
+  "/page": "app/page.js"
 }

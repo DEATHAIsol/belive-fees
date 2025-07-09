@@ -1,45 +1,46 @@
-# Belive Jackpot
+# Bonk Spins
 
-Hourly lottery for $BELIVE token holders on Solana.
+Spin your way to the next degen jackpot. Meme slot machine on Solana.
 
 ## Features
-- Dashboard with live stats and leaderboard
-- Hourly round draws with weighted random winner
-- MongoDB for round history
-- Solana Tracker API for token and wallet data
-- No wallet connection required
+- Meme-heavy, animated 5-reel slot machine
+- Solana wallet connect (BONK token required)
+- Jackpot, Major, Minor win logic
+- Prize pool and burn tracker
+- Leaderboard with recent and all-time winners
+- Dev Test page (jackpot always wins)
+- MongoDB for round/spin history
+- Responsive, TailwindCSS UI
 
-## Tech Stack
-- Next.js (API & frontend)
-- React & TailwindCSS (UI)
-- MongoDB (round history)
-- Solana Tracker API (data source)
+## Pages
+- Landing (Jackpot, breakdown, leaderboard preview)
+- Slot Machine (main game)
+- Leaderboard
+- Dev Test (guaranteed jackpot)
+- About
 
 ## Setup
 
 1. **Clone the repo:**
    ```bash
    git clone <repo-url>
-   cd belive-jackpot
+   cd bonk-spins
    ```
-
 2. **Install dependencies:**
    ```bash
    npm install
    # or
    yarn
    ```
-
 3. **Configure environment variables:**
    Create a `.env.local` file:
    ```env
-   TOKEN_ADDRESS=your_spl_token_address_here
-   REWARD_WALLET=your_reward_wallet_address_here
-   MONGODB_URI=mongodb://localhost:27017/belive-jackpot
-   SOLANA_TRACKER_API_KEY=your_api_key_if_needed
+   TOKEN_ADDRESS=your_bonk_token_address
+   REWARD_WALLET=your_reward_wallet_address
+   MONGODB_URI=mongodb://localhost:27017/bonk-spins
+   SOLANA_TRACKER_API_KEY=your_api_key
    CRON_SECRET=your_cron_secret
    ```
-
 4. **Run the app:**
    ```bash
    npm run dev
@@ -47,20 +48,12 @@ Hourly lottery for $BELIVE token holders on Solana.
    yarn dev
    ```
 
-5. **Set up the cron job:**
-   Use a service like [cron-job.org](https://cron-job.org/) or your own scheduler to POST to `/api/cron` every hour:
-   ```bash
-   curl -X POST https://yourdomain.com/api/cron -H "Authorization: Bearer <CRON_SECRET>"
-   ```
-
 ## API Endpoints
-- `/api/latest-round` — Latest round info
-- `/api/ticket-holders` — Top 10 ticket holders for leaderboard
-- `/api/total-holders` — Total number of token holders
-- `/api/total-contests` — Total contests
-- `/api/current-prize-pool` — Current prize pool (SOL balance)
-- `/api/history` — All round history
-- `/api/cron` — Trigger a new round (POST)
+- `/api/spin` — Main spin endpoint
+- `/api/dev-spin` — Dev test (always jackpot)
+- `/api/leaderboard` — Leaderboard data
+- `/api/current-prize-pool` — Current prize pool
+- `/api/history` — Spin/round history
 
 ## License
 MIT 

@@ -11,20 +11,20 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/history/page": [
+    "/slot/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/history/page.js"
+      "static/chunks/app/slot/page.js"
     ],
-    "/about/page": [
+    "/leaderboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/about/page.js"
+      "static/chunks/app/leaderboard/page.js"
     ],
-    "/buy/page": [
+    "/dev-test/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/buy/page.js"
+      "static/chunks/app/dev-test/page.js"
     ]
   }
 }

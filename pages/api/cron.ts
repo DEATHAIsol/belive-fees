@@ -34,6 +34,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Get current round number
     const client = await clientPromise;
+    if (!client) {
+      throw new Error('Failed to connect to database');
+    }
     const db = client.db('belive-jackpot');
     const roundsCollection = db.collection('rounds');
 
